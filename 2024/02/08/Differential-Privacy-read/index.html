@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="zh-CN" theme-mode="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>《Differential Privacy》阅读 | Merak</title><link rel="icon" type="image/x-icon" href="/favicon.ico"><link rel="preload" as="font" crossorigin="anonymous" href="/font/Bender.ttf"><link rel="preload" as="font" crossorigin="anonymous" href="/font/BenderLight.ttf"><link rel="preload" as="font" crossorigin="anonymous" href="/font/JetBrainsMono-Regular.woff2"><link rel="stylesheet" href="/css/arknights.css"><style>@font-face {
+  font-family: Bender;
+  src: local('Bender'), url("/font/Bender.ttf"), url("/font/Bender.otf");
+}
+@font-face {
+  font-family: BenderLight;
+  src: local('BenderLight'), url("/font/BenderLight.ttf");
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: local('JetBrains Mono'), url('/font/JetBrainsMono-Regular.woff2') format('woff2');
+}
+</style><script>var config = {"root":"/","search":{"preload":false,"activeHolder":"Enter here","blurHolder":"Search","noResult":"Data \"$0\" not found"},"code":{"codeInfo":"$0 - $1 lines","copy":"copy"}}</script><link type="text/css" rel="stylesheet" href="/lib/encrypt/hbe.style.css"><link type="text/css" rel="stylesheet" href="//unpkg.com/lightgallery@2.7.1/css/lightgallery.css"><link type="text/css" rel="stylesheet" href="//unpkg.com/lightgallery@2.7.1/css/lg-zoom.css"><link type="text/css" rel="stylesheet" href="//unpkg.com/lightgallery@2.7.1/css/lg-thumbnail.css"><link type="text/css" rel="stylesheet" href="/lib/fontawesome/css/all.min.css"><script>if (window.localStorage.getItem('theme-mode') === 'light')
+ document.documentElement.setAttribute('theme-mode', 'light')
+if (window.localStorage.getItem('theme-mode') === 'dark')
+ document.documentElement.setAttribute('theme-mode', 'dark')</script><style>:root {
+ --dark-background: url('https://ak.hypergryph.com/assets/index/images/ak/pc/bk.jpg');
+ --light-background: url('/img/bk.jpg');
+ --theme-encrypt-confirm: 'confirm'
+}</style><script defer src="/js/arknights.js"></script><script defer src="/js/search.js"></script><script defer type="module">import mermaid from '//unpkg.com/mermaid@10.5.0/dist/mermaid.esm.mjs';
+window.mermaid = mermaid;
+code.paintMermaid();
+</script><script async src="//unpkg.com/lightgallery@2.7.1/lightgallery.min.js"></script><script async src="//unpkg.com/lightgallery@2.7.1/plugins/zoom/lg-zoom.min.js"></script><script async src="//unpkg.com/lightgallery@2.7.1/plugins/thumbnail/lg-thumbnail.min.js"></script><script async src="/lib/encrypt/hbe.js"></script><script async src="/js/pjax.js"></script><script class="pjax-js">reset= () => {document.querySelector('.lg-container')?.remove()
+lightGallery(document.getElementById('post-bg'), {
+  plugins: [lgZoom,lgThumbnail],
+  selector: '.item-img'})}</script><script>window.addEventListener("load",() => {pjax = new Pjax({
+ cacheBust: false,
+ selectors: ['title','article','#aside-block','.pjax-js','data-pjax','.busuanzi'],
+ switches: {'article': Pjax.switches.sideBySide},
+ switchesOptions: {
+   'article': {
+     classNames: {
+       remove: "pjax-out",
+       add: "pjax-in"
+     }
+   }
+ }
+});
+document.addEventListener("pjax:complete", reset);reset()})</script><meta name="generator" content="Hexo 7.1.1"></head><body><div class="loading" style="opacity: 0;"><div class="loadingBar left"></div><div class="loadingBar right"></div></div><main><header class="closed"><div class="navBtn"><i class="navBtnIcon"><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span></i></div><nav><div class="navItem" id="search-header"><span class="navItemTitle"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="Search" spellcheck="false" maxlength="50" type="text" id="search-input"></span></div><div class="navItem" id="search-holder"></div><div class="search-popup" tabindex="0"><div id="search-result"></div></div><ol class="navContent"><li class="navItem"><a class="navBlock" href="/"><span class="navItemTitle">Home</span></a></li><li class="navItem" matchdata="categories,tags"><a class="navBlock" href="/archives/"><span class="navItemTitle">Archives</span></a></li></ol></nav></header><article><div id="post-bg"><div id="post-title"><h1>《Differential Privacy》阅读</h1><div id="post-info"><span>First Post: <div class="control"><time datetime="2024-02-07T16:56:22.000Z" id="date"> 2024-02-08</time></div></span><br><span>Last Update: <div class="control"><time datetime="2024-02-07T17:01:11.986Z" id="updated"> 2024-02-08</time></div></span></div></div><hr><div id="post-content"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>该文章主要注重<strong>数据库中的隐私保护</strong>。差分隐私主要应用于在数据库统计信息揭露的背景下——提供一组用户的准确统计信息，同时保护每个人的隐私。差分隐私要求<strong>一组数据的统计信息与任何个人是否选择加入或退出数据集无关</strong>。</p>
+<p>数据库是一组<code>行</code>，每<code>行</code>包含一个人的数据。选择加入或退出数据库意味着最多只有一行不同的两个数据库，表示为$D$，$D’$。一个数据库是另一个数据库的子集。</p>
+<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><h4 id="严格差分隐私"><a href="#严格差分隐私" class="headerlink" title="严格差分隐私"></a>严格差分隐私</h4><p>一个随机函数 $\mathcal{K}$ ，使得其在两个相邻的数据集 $D$、$D’$ 上得到的任意相同输出集合S的概率满足<br>$$<br>Pr[\mathcal{K}(D)\in S]\leq exp(\varepsilon) * Pr[\mathcal{K}(D’)\in S]<br>$$<br>则称随机函数 $\mathcal{K}$ 满足 $\varepsilon - DP$ ，其中 $\varepsilon$ 被称为隐私预算，越小越能产生更强的隐私保证。</p>
+<h4 id="宽松差分隐私"><a href="#宽松差分隐私" class="headerlink" title="宽松差分隐私"></a>宽松差分隐私</h4><p>一个随机函数 $\mathcal{K}$ ，使得其在两个相邻的数据集 $D$、$D’$ 上得到的任意相同输出集合S的概率满足<br>$$<br>Pr[\mathcal{K}(D)\in S]\leq exp(\varepsilon) * Pr[\mathcal{K}(D’)\in S] + \delta<br>$$<br>则称随机函数 $\mathcal{K}$ 满足 $(\varepsilon,\delta) - DP$ ，其中 $\varepsilon$ 被称为隐私预算，越小越能产生更强的隐私保证；$\delta$ 为松驰项，通常非常小，小于数据库大小的倒数。</p>
+<h4 id="函数的-L-1-敏感度"><a href="#函数的-L-1-敏感度" class="headerlink" title="函数的 $L_1$-敏感度"></a>函数的 $L_1$-敏感度</h4><p>对于查询函数$f:\mathcal{D} \rightarrow R^d$，$L_1$ 敏感度是指：<br>$$<br>\Delta f &amp;&#x3D; \mathop{max}<em>{D,D’} |f(D)-f(D’)|<em>1<br>\ &amp;&#x3D;\mathop{max}</em>{D,D’} \sum</em>{i &#x3D; 1}^d |f(D)-f(D’)|<br>$$<br>$L_2$-敏感度与$L_1$-敏感度类似，使用$L_2$范式定义，常用于深度学习领域的差分隐私</p>
+<p>特殊的，当d等于1时，查询函数的输出为1维数据，则 $f$ 的敏感度是指函数在相邻数据库上取值之差的最大值。</p>
+<blockquote>
+<p>若$f$为数量查询，则$f(D)$是数据库中满足特定属性的行数，敏感度为1</p>
+<p>若$f$是直方图查询，其中可能的数据库的行的范围被划分为某个数量为k的类，且$f(D)$是整数的k元组，用于指示$D$中K个类中每个类的行数。则$f$的敏感度也为1。（增加或删除一行只会导致一个类的行数减1，其他类的变化都为0）</p>
+</blockquote>
+<h4 id="拉普拉斯分布（Laplace）"><a href="#拉普拉斯分布（Laplace）" class="headerlink" title="拉普拉斯分布（Laplace）"></a>拉普拉斯分布（Laplace）</h4><p><strong>概率密度：</strong><br>$$<br>f(x;\mu,b) &#x3D; \frac{1}{2b}exp(-\frac{|x-\mu|}{b})<br>$$<br>标准Laplace：<br>$$<br>f(x;0,1) &#x3D; \frac{1}{2}exp(-|x|)<br>$$<br><strong>期望为$\mu$，方差为$2b^2$</strong></p>
+<p>拆开绝对值是两个对称的指数分布</p>
+<p class='item-img' data-src='/2024/02/08/Differential-Privacy-read/70.png'><img src="/2024/02/08/Differential-Privacy-read/70.png" alt="img"></p>
+<p>当$b &#x3D; 1&#x2F;\varepsilon$，x处的概率密度与$e^{-\varepsilon|x|}$成正比，且随着$\varepsilon$​变小，分布更加平坦。由此得到下述定理</p>
+<h3 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h3><p>对于函数$f: \mathcal{D} \rightarrow R^d$，将独立生成分布为$Lap(\Delta f&#x2F;\varepsilon)$的噪声添加到d中每个输出项的机制享有$\varepsilon-DP$。</p>
+<p>该噪声与数据库及其大小无关。</p>
+<p><strong>证明：</strong></p>
+<p>相当于在函数$f(x)$上添加一个噪声b，且b服从$\frac{\varepsilon}{2\Delta f}exp(-\frac{b\varepsilon}{\Delta f})$<br>$$<br>\begin{align*}<br>\mathcal{K}(x) &amp;&#x3D; f(x) + b<br>\<br>Pr[\mathcal{K}(x) &#x3D; a] &amp;\propto \exp(\frac{-|f(x) - a|_1}{\Delta f&#x2F;\varepsilon})<br>\ \frac{Pr[\mathcal{K}(D) &#x3D; a]}{Pr[\mathcal{K}(D’) &#x3D; a]} &amp;&#x3D; \frac{\exp(\frac{-|f(D) - a|_1}{\Delta f&#x2F;\varepsilon})}{\exp(\frac{-|f(D’) - a|_1}{\Delta f&#x2F;\varepsilon})}<br>\ &amp;&#x3D;\exp(\frac{|f(D’) - a|_1 - |f(D) - a|_1}{\Delta f&#x2F;\varepsilon})<br>\ &amp;\leq \exp(\frac{|f(D’) - f(D)|_1}{\Delta f&#x2F;\varepsilon})<br>\ &amp; &#x3D; \exp(\frac{\Delta f}{\Delta f&#x2F;\varepsilon})<br>\ &amp; &#x3D; \exp(\varepsilon)<br>\end{align*}<br>$$</p>
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2><div id="paginator"></div></div><div id="post-footer"><div id="pages" style="justify-content: flex-end"><div class="footer-link" style="width: 50%;right:1px;border-left:1px #fe2 solid"><a href="/2024/02/08/fl-logistic/">Tensorflow实现逻辑回归联邦学习 Prev →</a></div></div></div></div><div class="bottom-btn"><div><a class="i-top" id="to-top" onClick="scrolls.scrolltop();" title="To Top" style="opacity: 0; display: none;">∧ </a><a class="i-index" id="to-index" href="#toc-div" title="To Catalog">≡</a><a class="i-color" id="color-mode" onClick="colorMode.change()" title="Change Theme"></a></div></div></article><aside><div id="about"><a href="/" id="logo"><img src="https://ak.hypergryph.com/assets/index/images/ak/pc/faction/1.png" alt="Logo"></a><h1 id="Dr"><a href="/">Merak</a></h1><div id="description"><p>Merak's blog</p></div></div><div id="aside-block"><div id="toc-div"><h1>Catalog</h1><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-number">1.1.</span> <span class="toc-text">定义</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%A5%E6%A0%BC%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81"><span class="toc-number">1.1.1.</span> <span class="toc-text">严格差分隐私</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%BD%E6%9D%BE%E5%B7%AE%E5%88%86%E9%9A%90%E7%A7%81"><span class="toc-number">1.1.2.</span> <span class="toc-text">宽松差分隐私</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E7%9A%84-L-1-%E6%95%8F%E6%84%9F%E5%BA%A6"><span class="toc-number">1.1.3.</span> <span class="toc-text">函数的 $L_1$-敏感度</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8B%89%E6%99%AE%E6%8B%89%E6%96%AF%E5%88%86%E5%B8%83%EF%BC%88Laplace%EF%BC%89"><span class="toc-number">1.1.4.</span> <span class="toc-text">拉普拉斯分布（Laplace）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%A1%88"><span class="toc-number">1.2.</span> <span class="toc-text">方案</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text"></span></a></li></ol></div></div><footer><nobr>Published with <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a></nobr><wbr><nobr> Theme <a target="_blank" rel="noopener" href="https://github.com/Yue-plus/hexo-theme-arknights">Arknights</a></nobr><wbr><nobr> by <a target="_blank" rel="noopener" href="https://github.com/Yue-plus">Yue_plus</a></nobr></footer></aside></main><canvas id="canvas-dust"></canvas></body></html>
